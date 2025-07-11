@@ -30,6 +30,11 @@
       --text-light: #f0f0f0;
       --text-dark: #111111;
       --accent: #4caf50;
+      --highlight: #e0f7e9;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
@@ -51,53 +56,94 @@
 
     h1 {
       font-size: 2rem;
+      margin-bottom: 0.5rem;
     }
 
-    .clock, .timer, .alarm {
-      margin: 2rem 0;
-      text-align: center;
+    .section {
+      width: 100%;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background: #fafafa;
+    }
+
+    .dark-mode .section {
+      background: #1f1f1f;
+      border-color: #333;
     }
 
     .time-display {
       font-size: 3rem;
       margin-top: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
     }
 
-    input, button {
+    label, input, button {
       font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+
+    input[type="number"], input[type="time"] {
+      width: 45%;
       padding: 0.5rem;
-      margin: 0.3rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #43a047;
+    }
+
+    .status {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: var(--accent);
     }
 
     .toggle-btn {
-      margin-top: 1rem;
+      margin-top: 2rem;
+      font-weight: bold;
       cursor: pointer;
       color: var(--accent);
-      font-weight: bold;
     }
 
     footer {
-      margin-top: 3rem;
+      margin-top: 4rem;
+      padding: 2rem;
       font-size: 0.9rem;
-      max-width: 600px;
+      max-width: 700px;
       text-align: center;
       color: #666;
     }
 
     @media (max-width: 600px) {
-      .time-display { font-size: 2.5rem; }
+      .time-display { font-size: 2.2rem; }
+      input[type="number"], input[type="time"] { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <h1>Free Online Alarm Clock & Timer</h1>
+  <h1>Online Alarm Clock & Timer</h1>
 
-  <div class="clock">
+  <div class="section">
     <h2>Live Clock</h2>
     <div class="time-display" id="liveClock">--:--:--</div>
   </div>
 
-  <div class="timer">
+  <div class="section">
     <h2>Countdown Timer</h2>
     <input type="number" id="timerMinutes" placeholder="Minutes" min="0" />
     <input type="number" id="timerSeconds" placeholder="Seconds" min="0" max="59" />
@@ -105,25 +151,18 @@
     <div class="time-display" id="timerDisplay">00:00</div>
   </div>
 
-  <div class="alarm">
-    <h2>Set Alarm</h2>
+  <div class="section">
+    <h2>Alarm Clock</h2>
     <input type="time" id="alarmTime" />
     <button onclick="setAlarm()">Set Alarm</button>
-    <div id="alarmStatus">No alarm set</div>
+    <div class="status" id="alarmStatus">No alarm set</div>
   </div>
 
   <div class="toggle-btn" onclick="toggleDarkMode()">Toggle Night Mode 🌙</div>
 
-  <section style="max-width: 800px; margin-top: 3rem;">
-    <h2>How to Use</h2>
-    <p>Use our free online alarm clock, countdown timer, and stopwatch — no download or registration needed. Whether you're working, studying, cooking, or taking a break, our simple browser-based clock tools help you stay on track.</p>
-    <ul>
-      <li><strong>Live Clock:</strong> Always visible and synced to your browser's local time.</li>
-      <li><strong>Countdown Timer:</strong> Enter minutes/seconds, click Start, and get an alert when time’s up.</li>
-      <li><strong>Alarm Clock:</strong> Choose a time and we’ll alert you with a sound and popup.</li>
-    </ul>
-    <p>Features include night mode, mobile-friendliness, and browser-based local storage. No personal data collected.</p>
-  </section>
+  <audio id="alarmSound">
+    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+  </audio>
 
   <footer>
     <p><strong>Privacy Policy:</strong><br />
@@ -137,11 +176,11 @@
       Email: <a href="mailto:support@timetellsinnovations.com">support@timetellsinnovations.com</a><br />
       Website: <a href="https://www.timetellsinnovations.com" target="_blank">www.timetellsinnovations.com</a>
     </p>
-  </footer>
 
-  <audio id="alarmSound">
-    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
-  </audio>
+    <p style="margin-top: 1rem; font-size: 0.85rem; color: #aaa;">
+      © 2025 TimeTells Innovations LLC — All Rights Reserved
+    </p>
+  </footer>
 
   <script>
     function updateClock() {
@@ -182,13 +221,13 @@
       const now = new Date();
       const [h, m] = alarmTime.split(":");
       const alarmDate = new Date();
-      alarmDate.setHours(h, m, 0, 0);
+      alarmDate.setHours(parseInt(h), parseInt(m), 0, 0);
       if (alarmDate < now) alarmDate.setDate(alarmDate.getDate() + 1);
       const delay = alarmDate - now;
       document.getElementById('alarmStatus').textContent = `Alarm set for ${alarmTime}`;
       alarmTimeout = setTimeout(() => {
         document.getElementById('alarmSound').play();
-        alert("Alarm ringing!");
+        alert("⏰ Alarm ringing!");
       }, delay);
     }
 
