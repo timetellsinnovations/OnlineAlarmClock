@@ -1,3 +1,12 @@
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0EQ8TX9HLC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0EQ8TX9HLC');
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -135,105 +144,3 @@
     }
   </style>
 </head>
-<body>
-  <h1>Online Alarm Clock & Timer</h1>
-
-  <div class="section">
-    <h2>Live Clock</h2>
-    <div class="time-display" id="liveClock">--:--:--</div>
-  </div>
-
-  <div class="section">
-    <h2>Countdown Timer</h2>
-    <input type="number" id="timerMinutes" placeholder="Minutes" min="0" />
-    <input type="number" id="timerSeconds" placeholder="Seconds" min="0" max="59" />
-    <button onclick="startTimer()">Start Timer</button>
-    <div class="time-display" id="timerDisplay">00:00</div>
-  </div>
-
-  <div class="section">
-    <h2>Alarm Clock</h2>
-    <input type="time" id="alarmTime" />
-    <button onclick="setAlarm()">Set Alarm</button>
-    <div class="status" id="alarmStatus">No alarm set</div>
-  </div>
-
-  <div class="toggle-btn" onclick="toggleDarkMode()">Toggle Night Mode 🌙</div>
-
-  <audio id="alarmSound">
-    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
-  </audio>
-
-  <footer>
-    <p><strong>Privacy Policy:</strong><br />
-      This site does not collect, store, or share any personal data.<br />
-      Settings are stored locally using your browser’s storage. No cookies or trackers.</p>
-
-    <p><strong>Terms of Use:</strong><br />
-      This site is provided "as is" without warranties. Use it at your own risk. We are not liable for missed alarms or timing errors. For personal, non-commercial use only.</p>
-
-    <p><strong>Contact:</strong><br />
-      Email: <a href="mailto:support@timetellsinnovations.com">support@timetellsinnovations.com</a><br />
-      Website: <a href="https://www.timetellsinnovations.com" target="_blank">www.timetellsinnovations.com</a>
-    </p>
-
-    <p style="margin-top: 1rem; font-size: 0.85rem; color: #aaa;">
-      © 2025 TimeTells Innovations LLC — All Rights Reserved
-    </p>
-  </footer>
-
-  <script>
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('liveClock').textContent = now.toLocaleTimeString();
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    let timerInterval;
-    function startTimer() {
-      clearInterval(timerInterval);
-      let minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
-      let seconds = parseInt(document.getElementById('timerSeconds').value) || 0;
-      let totalSeconds = minutes * 60 + seconds;
-      function updateDisplay() {
-        const min = Math.floor(totalSeconds / 60);
-        const sec = totalSeconds % 60;
-        document.getElementById('timerDisplay').textContent = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-      }
-      timerInterval = setInterval(() => {
-        if (totalSeconds <= 0) {
-          clearInterval(timerInterval);
-          document.getElementById('alarmSound').play();
-        } else {
-          totalSeconds--;
-          updateDisplay();
-        }
-      }, 1000);
-      updateDisplay();
-    }
-
-    let alarmTimeout;
-    function setAlarm() {
-      clearTimeout(alarmTimeout);
-      const alarmTime = document.getElementById('alarmTime').value;
-      if (!alarmTime) return;
-      const now = new Date();
-      const [h, m] = alarmTime.split(":");
-      const alarmDate = new Date();
-      alarmDate.setHours(parseInt(h), parseInt(m), 0, 0);
-      if (alarmDate < now) alarmDate.setDate(alarmDate.getDate() + 1);
-      const delay = alarmDate - now;
-      document.getElementById('alarmStatus').textContent = `Alarm set for ${alarmTime}`;
-      alarmTimeout = setTimeout(() => {
-        document.getElementById('alarmSound').play();
-        alert("⏰ Alarm ringing!");
-      }, delay);
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-    }
-  </script>
-</body>
-</html>
