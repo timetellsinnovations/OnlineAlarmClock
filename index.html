@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Alarm Clock & Timer | Free Digital Clock</title>
+  <meta name="description" content="Use our free online alarm clock, timer, and stopwatch. Perfect for productivity, cooking, workouts, and sleep. No downloads, mobile-friendly, and works in your browser." />
+  <meta name="keywords" content="online alarm clock, timer, stopwatch, digital clock, browser timer, alarm for study, alarm for cooking" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://www.timetellsinnovations.com/favicon.png" />
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Online Alarm Clock & Timer | Free Digital Clock" />
+  <meta property="og:description" content="Use our free browser-based alarm clock, timer, and stopwatch. Mobile-friendly, no downloads needed." />
+  <meta property="og:url" content="https://timetellsinnovations.github.io/online-alarm-clock-andtimer" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://www.timetellsinnovations.com/og-image.png" />
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Online Alarm Clock & Timer" />
+  <meta name="twitter:description" content="Simple online alarm and timer app. Works in your browser. Perfect for focus, cooking, and sleep." />
+  <meta name="twitter:image" content="https://www.timetellsinnovations.com/og-image.png" />
+
+  <style>
+    :root {
+      --bg-light: #ffffff;
+      --bg-dark: #121212;
+      --text-light: #f0f0f0;
+      --text-dark: #111111;
+      --accent: #4caf50;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .dark-mode {
+      background: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .clock, .timer, .alarm {
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .time-display {
+      font-size: 3rem;
+      margin-top: 1rem;
+    }
+
+    input, button {
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin: 0.3rem;
+    }
+
+    .toggle-btn {
+      margin-top: 1rem;
+      cursor: pointer;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      max-width: 600px;
+      text-align: center;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      .time-display { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Free Online Alarm Clock & Timer</h1>
+
+  <div class="clock">
+    <h2>Live Clock</h2>
+    <div class="time-display" id="liveClock">--:--:--</div>
+  </div>
+
+  <div class="timer">
+    <h2>Countdown Timer</h2>
+    <input type="number" id="timerMinutes" placeholder="Minutes" min="0" />
+    <input type="number" id="timerSeconds" placeholder="Seconds" min="0" max="59" />
+    <button onclick="startTimer()">Start Timer</button>
+    <div class="time-display" id="timerDisplay">00:00</div>
+  </div>
+
+  <div class="alarm">
+    <h2>Set Alarm</h2>
+    <input type="time" id="alarmTime" />
+    <button onclick="setAlarm()">Set Alarm</button>
+    <div id="alarmStatus">No alarm set</div>
+  </div>
+
+  <div class="toggle-btn" onclick="toggleDarkMode()">Toggle Night Mode 🌙</div>
+
+  <section style="max-width: 800px; margin-top: 3rem;">
+    <h2>How to Use</h2>
+    <p>Use our free online alarm clock, countdown timer, and stopwatch — no download or registration needed. Whether you're working, studying, cooking, or taking a break, our simple browser-based clock tools help you stay on track.</p>
+    <ul>
+      <li><strong>Live Clock:</strong> Always visible and synced to your browser's local time.</li>
+      <li><strong>Countdown Timer:</strong> Enter minutes/seconds, click Start, and get an alert when time’s up.</li>
+      <li><strong>Alarm Clock:</strong> Choose a time and we’ll alert you with a sound and popup.</li>
+    </ul>
+    <p>Features include night mode, mobile-friendliness, and browser-based local storage. No personal data collected.</p>
+  </section>
+
+  <footer>
+    <p><strong>Privacy Policy:</strong><br />
+      This site does not collect, store, or share any personal data.<br />
+      Settings are stored locally using your browser’s storage. No cookies or trackers.</p>
+
+    <p><strong>Terms of Use:</strong><br />
+      This site is provided "as is" without warranties. Use it at your own risk. We are not liable for missed alarms or timing errors. For personal, non-commercial use only.</p>
+
+    <p><strong>Contact:</strong><br />
+      Email: <a href="mailto:support@timetellsinnovations.com">support@timetellsinnovations.com</a><br />
+      Website: <a href="https://www.timetellsinnovations.com" target="_blank">www.timetellsinnovations.com</a>
+    </p>
+  </footer>
+
+  <audio id="alarmSound">
+    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+  </audio>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('liveClock').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    let timerInterval;
+    function startTimer() {
+      clearInterval(timerInterval);
+      let minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
+      let seconds = parseInt(document.getElementById('timerSeconds').value) || 0;
+      let totalSeconds = minutes * 60 + seconds;
+      function updateDisplay() {
+        const min = Math.floor(totalSeconds / 60);
+        const sec = totalSeconds % 60;
+        document.getElementById('timerDisplay').textContent = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+      }
+      timerInterval = setInterval(() => {
+        if (totalSeconds <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('alarmSound').play();
+        } else {
+          totalSeconds--;
+          updateDisplay();
+        }
+      }, 1000);
+      updateDisplay();
+    }
+
+    let alarmTimeout;
+    function setAlarm() {
+      clearTimeout(alarmTimeout);
+      const alarmTime = document.getElementById('alarmTime').value;
+      if (!alarmTime) return;
+      const now = new Date();
+      const [h, m] = alarmTime.split(":");
+      const alarmDate = new Date();
+      alarmDate.setHours(h, m, 0, 0);
+      if (alarmDate < now) alarmDate.setDate(alarmDate.getDate() + 1);
+      const delay = alarmDate - now;
+      document.getElementById('alarmStatus').textContent = `Alarm set for ${alarmTime}`;
+      alarmTimeout = setTimeout(() => {
+        document.getElementById('alarmSound').play();
+        alert("Alarm ringing!");
+      }, delay);
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
