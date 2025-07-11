@@ -165,12 +165,20 @@
     <button onclick="setAlarm()">Set Alarm</button>
     <div class="status" id="alarmStatus">No alarm set</div>
   </div>
+    <ul id="alarmList" class="status"></ul>
+<ul id="alarmHistory" class="status"></ul>
+    <div class="toggle-btn" onclick="toggleDarkMode()">Toggle Night Mode 🌙</div>
 
-  <div class="toggle-btn" onclick="toggleDarkMode()">Toggle Night Mode 🌙</div>
+  <label for="alarmTone">Choose alarm sound:</label>
+<select id="alarmTone" onchange="changeAlarmSound()">
+  <option value="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">Default Alarm</option>
+  <option value="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg">Digital Watch</option>
+  <option value="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">Short Beep</option>
+</select>
 
-  <audio id="alarmSound">
-    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
-  </audio>
+<audio id="alarmSound">
+  <source id="alarmAudioSource" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+</audio>
 
   <footer>
     <p><strong>Privacy Policy:</strong><br />
@@ -222,24 +230,64 @@
     }
 
     let alarmTimeout;
-    function setAlarm() {
-      clearTimeout(alarmTimeout);
-      const alarmTime = document.getElementById('alarmTime').value;
-      if (!alarmTime) return;
-      const now = new Date();
-      const [h, m] = alarmTime.split(":");
-      const alarmDate = new Date();
-      alarmDate.setHours(parseInt(h), parseInt(m), 0, 0);
-      if (alarmDate < now) alarmDate.setDate(alarmDate.getDate() + 1);
-      const delay = alarmDate - now;
-      document.getElementById('alarmStatus').textContent = `Alarm set for ${alarmTime}`;
-      alarmTimeout = setTimeout(() => {
-        document.getElementById('alarmSound').play();
-        alert("⏰ Alarm ringing!");
+let alarmSound = document.getElementById('alarmSound');
+let alarmAudioSource = document.getElementById('alarmAudioSource');
+
+function setAlarm() {
+  const alarmTime = document.getElementById('alarmTime').value;
+  if (!alarmTime) return;
+  const now = new Date();
+  const [h, m] = alarmTime.split(":");
+  const alarmDate = new Date();
+  alarmDate.setHours(parseInt(h), parseInt(m), 0, 0);
+  if (alarmDate < now) alarmDate.setDate(alarmDate.getDate() + 1);
+  const delay = alarmDate - now;
+
+  const alarmItem = document.createElement('li');
+  alarmItem.innerHTML = `⏰ Alarm set for ${alarmDate.toLocaleTimeString()} <button onclick=\"cancelAlarm(this)\">Cancel</button> <button onclick=\"snoozeAlarm(5)\">Snooze</button>`;
+  document.getElementById('alarmList').appendChild(alarmItem);
+
+  alarmTimeout = setTimeout(() => {
+    alarmSound.play();
+    alert("⏰ Alarm ringing!");
+    logAlarmHistory(alarmDate.toLocaleTimeString());
+  }, delay);
+
+      const alarmItem = document.createElement('li');
+      alarmItem.innerHTML = `⏰ Alarm set for ${alarmDate.toLocaleTimeString()} <button onclick=\"cancelAlarm(this)\">Cancel</button> <button onclick=\"snoozeAlarm(5)\">Snooze</button>`
+      document.getElementById('alarmList').appendChild(alarmItem);
+
+
+        alarmSound.play();
+  alert("⏰ Alarm ringing!");
       }, delay);
     }
 
-    function toggleDarkMode() {
+    function cancelAlarm(button) {
+  button.parentElement.remove();
+}
+
+function logAlarmHistory(time) {
+  const entry = document.createElement('li');
+  entry.textContent = `✅ Alarm rang at ${time}`;
+  document.getElementById('alarmHistory').appendChild(entry);
+}
+
+function snoozeAlarm(minutes) {
+  const snoozeDate = new Date(Date.now() + minutes * 60000);
+  const h = snoozeDate.getHours().toString().padStart(2, '0');
+  const m = snoozeDate.getMinutes().toString().padStart(2, '0');
+  document.getElementById('alarmTime').value = `${h}:${m}`;
+  setAlarm();
+}
+
+function changeAlarmSound() {
+  const selectedUrl = document.getElementById('alarmTone').value;
+  alarmAudioSource.src = selectedUrl;
+  alarmSound.load();
+}
+
+function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
     }
   </script>
