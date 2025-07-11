@@ -9,7 +9,8 @@
     gtag('js', new Date());
     gtag('config', 'G-0EQ8TX9HLC');
   </script>
-<meta charset="UTF-8" />
+  
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Online Alarm Clock & Timer | Free Digital Clock</title>
   <meta name="description" content="Use our free online alarm clock, timer, and stopwatch. Perfect for productivity, cooking, workouts, and sleep. No downloads, mobile-friendly, and works in your browser." />
@@ -39,6 +40,10 @@
       --text-dark: #111111;
       --accent: #4caf50;
       --highlight: #e0f7e9;
+      --border-light: #ccc;
+      --border-dark: #333;
+      --section-bg-light: #fafafa;
+      --section-bg-dark: #1f1f1f;
     }
 
     * {
@@ -47,14 +52,15 @@
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: var(--bg-light);
       color: var(--text-dark);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 2rem;
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
     }
 
     .dark-mode {
@@ -63,69 +69,175 @@
     }
 
     h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
     }
 
     .section {
       width: 100%;
       max-width: 500px;
-      margin: 2rem auto;
-      padding: 1.5rem;
-      border: 1px solid #ccc;
+      margin: 1.5rem auto;
+      padding: 2rem;
+      border: 1px solid var(--border-light);
       border-radius: 12px;
-      background: #fafafa;
+      background: var(--section-bg-light);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
     .dark-mode .section {
-      background: #1f1f1f;
-      border-color: #333;
+      background: var(--section-bg-dark);
+      border-color: var(--border-dark);
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
     }
 
     .time-display {
       font-size: 3rem;
-      margin-top: 1rem;
+      margin: 1rem 0;
       font-weight: 600;
       letter-spacing: 0.05em;
+      text-align: center;
+      color: var(--accent);
+      font-family: 'Courier New', monospace;
     }
 
-    label, input, button {
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    label {
       font-size: 1rem;
       margin: 0.5rem 0;
+      font-weight: 500;
     }
 
-    input[type="number"], input[type="time"] {
-      width: 45%;
-      padding: 0.5rem;
+    input[type="number"], input[type="time"], select {
+      flex: 1;
+      padding: 0.75rem;
       border-radius: 6px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border-light);
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .dark-mode input[type="number"], 
+    .dark-mode input[type="time"], 
+    .dark-mode select {
+      background: var(--section-bg-dark);
+      border-color: var(--border-dark);
+      color: var(--text-light);
+    }
+
+    input[type="number"]:focus, 
+    input[type="time"]:focus, 
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
     }
 
     button {
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       background: var(--accent);
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: background 0.3s;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
 
     button:hover {
       background: #43a047;
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.danger {
+      background: #f44336;
+    }
+
+    button.danger:hover {
+      background: #d32f2f;
+    }
+
+    button.secondary {
+      background: #2196f3;
+    }
+
+    button.secondary:hover {
+      background: #1976d2;
     }
 
     .status {
-      margin-top: 1rem;
+      margin: 1rem 0;
       font-weight: bold;
       color: var(--accent);
+      text-align: center;
+    }
+
+    .alarm-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    .alarm-list li {
+      background: var(--highlight);
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .dark-mode .alarm-list li {
+      background: rgba(76, 175, 80, 0.1);
+    }
+
+    .alarm-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .alarm-actions button {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
     }
 
     .toggle-btn {
-      margin-top: 2rem;
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
-      color: var(--accent);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background: #43a047;
+      transform: translateY(-2px);
     }
 
     footer {
@@ -135,11 +247,51 @@
       max-width: 700px;
       text-align: center;
       color: #666;
+      line-height: 1.6;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .dark-mode footer {
+      color: #aaa;
     }
 
     @media (max-width: 600px) {
-      .time-display { font-size: 2.2rem; }
-      input[type="number"], input[type="time"] { width: 100%; }
+      body {
+        padding: 1rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .time-display {
+        font-size: 2.2rem;
+      }
+      
+      .input-group {
+        flex-direction: column;
+      }
+      
+      .section {
+        padding: 1.5rem;
+      }
+      
+      .alarm-list li {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .alarm-actions {
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -147,43 +299,59 @@
   <h1>Online Alarm Clock & Timer</h1>
 
   <div class="section">
-    <h2>Live Clock</h2>
+    <h2>🕐 Live Clock</h2>
     <div class="time-display" id="liveClock">--:--:--</div>
   </div>
 
   <div class="section">
-    <h2>Countdown Timer</h2>
-    <input type="number" id="timerMinutes" placeholder="Minutes" min="0" />
-    <input type="number" id="timerSeconds" placeholder="Seconds" min="0" max="59" />
+    <h2>⏱️ Countdown Timer</h2>
+    <div class="input-group">
+      <input type="number" id="timerMinutes" placeholder="Minutes" min="0" max="999" />
+      <input type="number" id="timerSeconds" placeholder="Seconds" min="0" max="59" />
+    </div>
     <button onclick="startTimer()">Start Timer</button>
+    <button onclick="stopTimer()" class="danger">Stop Timer</button>
     <div class="time-display" id="timerDisplay">00:00</div>
+    <div class="status" id="timerStatus"></div>
   </div>
 
   <div class="section">
-    <h2>Alarm Clock</h2>
-    <input type="time" id="alarmTime" />
-    <button onclick="setAlarm()">Set Alarm</button>
+    <h2>⏰ Alarm Clock</h2>
+    <div class="input-group">
+      <input type="time" id="alarmTime" />
+      <button onclick="setAlarm()">Set Alarm</button>
+    </div>
     <div class="status" id="alarmStatus">No alarm set</div>
+    
+    <h3>Active Alarms:</h3>
+    <ul id="alarmList" class="alarm-list"></ul>
+    
+    <h3>Alarm History:</h3>
+    <ul id="alarmHistory" class="alarm-list"></ul>
   </div>
-    <ul id="alarmList" class="status"></ul>
-<ul id="alarmHistory" class="status"></ul>
-    <div class="toggle-btn" onclick="toggleDarkMode()">Toggle Night Mode 🌙</div>
 
-  <label for="alarmTone">Choose alarm sound:</label>
-<select id="alarmTone" onchange="changeAlarmSound()">
-  <option value="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">Default Alarm</option>
-  <option value="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg">Digital Watch</option>
-  <option value="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">Short Beep</option>
-</select>
+  <div class="section">
+    <h2>🔊 Alarm Settings</h2>
+    <label for="alarmTone">Choose alarm sound:</label>
+    <select id="alarmTone" onchange="changeAlarmSound()">
+      <option value="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">Default Alarm</option>
+      <option value="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg">Digital Watch</option>
+      <option value="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">Short Beep</option>
+    </select>
+    <button onclick="testAlarmSound()">Test Sound</button>
+  </div>
 
-<audio id="alarmSound">
-  <source id="alarmAudioSource" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
-</audio>
+  <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Night Mode 🌙</button>
+
+  <audio id="alarmSound" preload="auto">
+    <source id="alarmAudioSource" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+    Your browser does not support the audio element.
+  </audio>
 
   <footer>
     <p><strong>Privacy Policy:</strong><br />
       This site does not collect, store, or share any personal data.<br />
-      Settings are stored locally using your browser’s storage. No cookies or trackers.</p>
+      Settings are stored locally using your browser's storage. No cookies or trackers.</p>
 
     <p><strong>Terms of Use:</strong><br />
       This site is provided "as is" without warranties. Use it at your own risk. We are not liable for missed alarms or timing errors. For personal, non-commercial use only.</p>
@@ -199,96 +367,218 @@
   </footer>
 
   <script>
+    // Global variables
+    let timerInterval;
+    let alarmTimeouts = [];
+    let alarmSound = document.getElementById('alarmSound');
+    let alarmAudioSource = document.getElementById('alarmAudioSource');
+
+    // Clock functionality
     function updateClock() {
       const now = new Date();
-      document.getElementById('liveClock').textContent = now.toLocaleTimeString();
+      const timeString = now.toLocaleTimeString();
+      document.getElementById('liveClock').textContent = timeString;
     }
+
+    // Initialize clock
     setInterval(updateClock, 1000);
     updateClock();
 
-    let timerInterval;
+    // Timer functionality
     function startTimer() {
       clearInterval(timerInterval);
-      let minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
-      let seconds = parseInt(document.getElementById('timerSeconds').value) || 0;
+      
+      const minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
+      const seconds = parseInt(document.getElementById('timerSeconds').value) || 0;
       let totalSeconds = minutes * 60 + seconds;
-      function updateDisplay() {
+      
+      if (totalSeconds <= 0) {
+        alert('Please enter a valid time for the timer.');
+        return;
+      }
+
+      document.getElementById('timerStatus').textContent = 'Timer running...';
+      
+      function updateTimerDisplay() {
         const min = Math.floor(totalSeconds / 60);
         const sec = totalSeconds % 60;
-        document.getElementById('timerDisplay').textContent = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        document.getElementById('timerDisplay').textContent = 
+          `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
+      
       timerInterval = setInterval(() => {
         if (totalSeconds <= 0) {
           clearInterval(timerInterval);
-          document.getElementById('alarmSound').play();
+          document.getElementById('timerStatus').textContent = 'Timer finished!';
+          playAlarmSound();
+          alert('⏰ Timer finished!');
         } else {
           totalSeconds--;
-          updateDisplay();
+          updateTimerDisplay();
         }
       }, 1000);
-      updateDisplay();
+      
+      updateTimerDisplay();
     }
 
-    let alarmTimeout;
-let alarmSound = document.getElementById('alarmSound');
-let alarmAudioSource = document.getElementById('alarmAudioSource');
+    function stopTimer() {
+      clearInterval(timerInterval);
+      document.getElementById('timerDisplay').textContent = '00:00';
+      document.getElementById('timerStatus').textContent = '';
+      document.getElementById('timerMinutes').value = '';
+      document.getElementById('timerSeconds').value = '';
+    }
 
-function setAlarm() {
-  const alarmTime = document.getElementById('alarmTime').value;
-  if (!alarmTime) return;
-  const now = new Date();
-  const [h, m] = alarmTime.split(":");
-  const alarmDate = new Date();
-  alarmDate.setHours(parseInt(h), parseInt(m), 0, 0);
-  if (alarmDate < now) alarmDate.setDate(alarmDate.getDate() + 1);
-  const delay = alarmDate - now;
+    // Alarm functionality
+    function setAlarm() {
+      const alarmTime = document.getElementById('alarmTime').value;
+      
+      if (!alarmTime) {
+        alert('Please select a time for the alarm.');
+        return;
+      }
 
-  const alarmItem = document.createElement('li');
-  alarmItem.innerHTML = `⏰ Alarm set for ${alarmDate.toLocaleTimeString()} <button onclick=\"cancelAlarm(this)\">Cancel</button> <button onclick=\"snoozeAlarm(5)\">Snooze</button>`;
-  document.getElementById('alarmList').appendChild(alarmItem);
+      const now = new Date();
+      const [hours, minutes] = alarmTime.split(':');
+      const alarmDate = new Date();
+      alarmDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+      
+      // If alarm time is in the past, set for tomorrow
+      if (alarmDate <= now) {
+        alarmDate.setDate(alarmDate.getDate() + 1);
+      }
+      
+      const delay = alarmDate - now;
+      const alarmId = Date.now();
 
-  alarmTimeout = setTimeout(() => {
-    alarmSound.play();
-    alert("⏰ Alarm ringing!");
-    logAlarmHistory(alarmDate.toLocaleTimeString());
-  }, delay);
-
+      // Create alarm item
       const alarmItem = document.createElement('li');
-      alarmItem.innerHTML = `⏰ Alarm set for ${alarmDate.toLocaleTimeString()} <button onclick=\"cancelAlarm(this)\">Cancel</button> <button onclick=\"snoozeAlarm(5)\">Snooze</button>`
+      alarmItem.id = `alarm-${alarmId}`;
+      alarmItem.innerHTML = `
+        <span>⏰ Alarm set for ${alarmDate.toLocaleString()}</span>
+        <div class="alarm-actions">
+          <button onclick="cancelAlarm(${alarmId})" class="danger">Cancel</button>
+          <button onclick="snoozeAlarm(${alarmId}, 5)" class="secondary">Snooze 5min</button>
+        </div>
+      `;
       document.getElementById('alarmList').appendChild(alarmItem);
 
-
-        alarmSound.play();
-  alert("⏰ Alarm ringing!");
+      // Set timeout for alarm
+      const timeoutId = setTimeout(() => {
+        playAlarmSound();
+        alert('⏰ Alarm ringing!');
+        logAlarmHistory(alarmDate.toLocaleString());
+        removeAlarmFromList(alarmId);
       }, delay);
+
+      // Store timeout ID for cancellation
+      alarmTimeouts[alarmId] = timeoutId;
+      
+      updateAlarmStatus();
     }
 
-    function cancelAlarm(button) {
-  button.parentElement.remove();
-}
+    function cancelAlarm(alarmId) {
+      if (alarmTimeouts[alarmId]) {
+        clearTimeout(alarmTimeouts[alarmId]);
+        delete alarmTimeouts[alarmId];
+      }
+      removeAlarmFromList(alarmId);
+      updateAlarmStatus();
+    }
 
-function logAlarmHistory(time) {
-  const entry = document.createElement('li');
-  entry.textContent = `✅ Alarm rang at ${time}`;
-  document.getElementById('alarmHistory').appendChild(entry);
-}
+    function removeAlarmFromList(alarmId) {
+      const alarmElement = document.getElementById(`alarm-${alarmId}`);
+      if (alarmElement) {
+        alarmElement.remove();
+      }
+    }
 
-function snoozeAlarm(minutes) {
-  const snoozeDate = new Date(Date.now() + minutes * 60000);
-  const h = snoozeDate.getHours().toString().padStart(2, '0');
-  const m = snoozeDate.getMinutes().toString().padStart(2, '0');
-  document.getElementById('alarmTime').value = `${h}:${m}`;
-  setAlarm();
-}
+    function snoozeAlarm(alarmId, minutes) {
+      // Cancel current alarm
+      cancelAlarm(alarmId);
+      
+      // Set new alarm for snooze time
+      const snoozeDate = new Date(Date.now() + minutes * 60000);
+      const hours = snoozeDate.getHours().toString().padStart(2, '0');
+      const mins = snoozeDate.getMinutes().toString().padStart(2, '0');
+      
+      document.getElementById('alarmTime').value = `${hours}:${mins}`;
+      setAlarm();
+    }
 
-function changeAlarmSound() {
-  const selectedUrl = document.getElementById('alarmTone').value;
-  alarmAudioSource.src = selectedUrl;
-  alarmSound.load();
-}
+    function logAlarmHistory(time) {
+      const entry = document.createElement('li');
+      entry.innerHTML = `<span>✅ Alarm rang at ${time}</span>`;
+      document.getElementById('alarmHistory').appendChild(entry);
+      
+      // Keep only last 10 entries
+      const historyList = document.getElementById('alarmHistory');
+      while (historyList.children.length > 10) {
+        historyList.removeChild(historyList.firstChild);
+      }
+    }
 
-function toggleDarkMode() {
+    function updateAlarmStatus() {
+      const activeAlarms = document.getElementById('alarmList').children.length;
+      const statusElement = document.getElementById('alarmStatus');
+      
+      if (activeAlarms === 0) {
+        statusElement.textContent = 'No alarm set';
+      } else {
+        statusElement.textContent = `${activeAlarms} active alarm${activeAlarms > 1 ? 's' : ''}`;
+      }
+    }
+
+    // Sound functionality
+    function changeAlarmSound() {
+      const selectedUrl = document.getElementById('alarmTone').value;
+      alarmAudioSource.src = selectedUrl;
+      alarmSound.load();
+    }
+
+    function playAlarmSound() {
+      try {
+        alarmSound.currentTime = 0;
+        alarmSound.play().catch(e => {
+          console.warn('Could not play alarm sound:', e);
+        });
+      } catch (error) {
+        console.warn('Audio playback error:', error);
+      }
+    }
+
+    function testAlarmSound() {
+      playAlarmSound();
+    }
+
+    // Dark mode functionality
+    function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
+      
+      // Save preference to localStorage
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
     }
+
+    // Initialize dark mode from localStorage
+    function initializeDarkMode() {
+      const savedDarkMode = localStorage.getItem('darkMode');
+      if (savedDarkMode === 'true') {
+        document.body.classList.add('dark-mode');
+      }
+    }
+
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeDarkMode();
+      updateAlarmStatus();
+    });
+
+    // Error handling for audio
+    alarmSound.addEventListener('error', function(e) {
+      console.warn('Audio error:', e);
+      alert('Warning: Alarm sound may not work properly. Please check your audio settings.');
+    });
   </script>
 </body>
+</html>
