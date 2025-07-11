@@ -558,6 +558,33 @@
     .custom-alert-content button:hover {
         background: var(--primary-dark);
     }
+
+    /* Footer Styling */
+    footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      font-size: 0.9rem;
+      max-width: 1200px; /* Match main content max-width */
+      margin-left: auto; /* Center the footer */
+      margin-right: auto; /* Center the footer */
+      text-align: center;
+      color: var(--text-dark); /* Use variable for consistency */
+      border-top: 1px solid var(--border-light); /* Use variable for consistency */
+      width: 100%; /* Ensure it takes full width up to max-width */
+      box-sizing: border-box; /* Include padding in width calculation */
+    }
+
+    .dark-mode footer {
+      color: var(--text-light); /* Dark mode text color */
+      border-color: var(--border-dark); /* Dark mode border color */
+    }
+
+    /* Responsive adjustments for footer */
+    @media (max-width: 768px) {
+        footer {
+            padding: 1.5rem; /* Slightly less padding on smaller screens */
+        }
+    }
   </style>
 </head>
 <body>
@@ -737,6 +764,17 @@
 
   <!-- Notification Container -->
   <div id="notificationContainer" class="notification-container"></div>
+
+  <footer>
+    <p><strong>Terms of Use:</strong><br />
+      This online alarm clock and timer is a free tool provided by TimeTells Innovations LLC for personal and general use only. By using this tool, you agree not to misuse it, redistribute it for commercial purposes without permission, or embed it in any way that violates applicable laws. We are not liable for missed alarms or timing errors.</p>
+
+    <p><strong>Privacy Policy:</strong><br />
+      No personal data is collected by this site. All settings are stored locally within your browser's storage and are not transmitted or saved externally. This site does not use cookies or external tracking. If we implement tracking or cookies in the future, we will update this section accordingly. This site may use Google Analytics or AdSense when enabled, in compliance with their respective policies.</p>
+
+    <p><strong>Copyright:</strong><br />
+      © 2025 TimeTells Innovations LLC. All rights reserved. Content and functionality may not be copied or cloned without written permission.</p>
+  </footer>
 
   <script>
     // --- DOM Element References ---
@@ -1174,7 +1212,7 @@
     // Attach event listeners for settings
     alarmToneSelect.addEventListener('change', changeAlarmSound);
     volumeControl.addEventListener('input', setAlarmVolume);
-    testSoundBtn.addEventListener('click', testAlarmSound); 
+    testSoundBtn.addEventListener('click', testSoundBtn); 
     resetSettingsBtn.addEventListener('click', resetSettings);
 
     // Initialize settings on load
